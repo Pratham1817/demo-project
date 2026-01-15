@@ -9,7 +9,7 @@ const STATIC_OTP = "123456"; // Static OTP
 const createToken = (userId) =>
   jwt.sign({ id: userId }, JWT_SECRET, { expiresIn: "24h" });
 
-// ---------------- REGISTRATION ----------------
+//  REGISTRATION 
 export async function registerUser(req, res) {
   const { name, email, password, mobile } = req.body;
 
@@ -51,7 +51,7 @@ export async function registerUser(req, res) {
   }
 }
 
-// ---------------- SEND OTP ----------------
+// SEND OTP 
 export async function sendOtp(req, res) {
   const { mobile } = req.body;
 
@@ -68,7 +68,7 @@ export async function sendOtp(req, res) {
       .json({ success: false, message: "Mobile not registered" });
   }
 
-  // Console log for testing
+  // Console log 
   console.log(`STATIC OTP for ${mobile}: ${STATIC_OTP}`);
 
   res.json({
@@ -77,7 +77,7 @@ export async function sendOtp(req, res) {
   });
 }
 
-// ---------------- VERIFY OTP ----------------
+// VERIFY OTP 
 export async function verifyOtp(req, res) {
   const { mobile, otp } = req.body;
 
