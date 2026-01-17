@@ -1,19 +1,19 @@
 import express from "express";
+import { joiValidator } from "../middleware/joiValidator.js";
+import {
+  registerSchema,
+  sendOtpSchema,
+  verifyOtpSchema, } from "../validations/authValidation.js";
+
 import {
   registerUser,
   sendOtp,
-  verifyOtp,
-} from "../controllers/authController.js";
+  verifyOtp, } from "../controllers/authController.js";
 
 const router = express.Router();
 
-// Registration
-router.post("/register", registerUser);
-
-// Login Step 1: Send OTP
-router.post("/send-otp", sendOtp);
-
-// Login Step 2: Verify OTP
-router.post("/verify-otp", verifyOtp);
+router.post("/register", joiValidator(registerSchema), registerUser);
+router.post("/send-otp", joiValidator(sendOtpSchema), sendOtp);
+router.post("/verify-otp", joiValidator(verifyOtpSchema), verifyOtp);
 
 export default router;
