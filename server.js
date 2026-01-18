@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes.js";
 import addressRoutes from "./routes/addressRoutes.js"
 import productRoutes from "./routes/productRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+
 
 import dotenv from "dotenv";
 
@@ -20,6 +22,8 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/address", addressRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/admin/auth", adminRoutes);
+
 
 
 const PORT = process.env.PORT || 5000;

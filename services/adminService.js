@@ -5,12 +5,10 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET || "pratham18";
 const STATIC_OTP = "123456";
 
-
-
-export const registerUserService = async (data) => {
+export const registerAdminService = async (data) => {
   if (await User.findOne({ email: data.email })) {
     throw new Error("Email already exists");
-    }
+  }
 
   if (await User.findOne({ mobile: data.mobile })) {
     throw new Error("Mobile already exists");
@@ -21,26 +19,26 @@ export const registerUserService = async (data) => {
   await User.create({
     ...data,
     password: hashed,
-    role: "user",
+    role: "admin", //role admin
   });
 };
 
-export const sendOtpService = async (mobile) => {
-  const user = await User.findOne({ mobile });
-  if (!user) throw new Error("Mobile not registered");
+export const sendAdminOtpService = async (mobile) => {
+  const admin = await User.findOne({ mobile, role: "admin" });
+  if (!admin) throw new Error("Admin not registered");
 
-  console.log(`STATIC OTP for ${mobile}: ${STATIC_OTP}`);
+  console.log(`STATIC OTP for admin ${mobile}: ${STATIC_OTP}`);
 };
 
-export const verifyOtpService = async (mobile, otp) => {
+export const verifyAdminOtpService = async (mobile, otp) => {
   if (otp !== STATIC_OTP) throw new Error("Invalid OTP");
 
-  const user = await User.findOne({ mobile });
-  if (!user) throw new Error("User not found");
+  const admin = await User.findOne({ mobile, role: "admin" });
+  if (!admin) throw new Error("Admin not found");
 
-  const token = jwt.sign({ id: user._id }, JWT_SECRET, {
+  const token = jwt.sign({ id: admin._id }, JWT_SECRET, {
     expiresIn: "24h",
   });
 
-  return { token, user };
+  return { token, user: admin };
 };
